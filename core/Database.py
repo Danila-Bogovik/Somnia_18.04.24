@@ -15,6 +15,11 @@ class Database:
                                 email TEXT UNIQUE NOT NULL,
                                 profile_pic TEXT NOT NULL
                             );""")
+            cursor.execute("""CREATE TABLE IF NOT EXISTS AllowedUsers
+                           (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                email TEXT UNIQUE NOT NULL 
+                            );""")
 
     def _fetchData(self, request:str) -> list:
         with sqlite3.connect(db_name) as connection:

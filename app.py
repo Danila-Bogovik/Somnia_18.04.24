@@ -2,7 +2,7 @@
 import json
 
 # Third party libraries
-from flask import Flask, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for
 from flask_login import (
     LoginManager,
     current_user,
@@ -14,25 +14,24 @@ from oauthlib.oauth2 import WebApplicationClient
 import requests
 
 from core.UserController import UserController, User
+from core.AdminController import AdminController
 
-
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
 
 
 app = Flask(__name__)
-app.secret_key = "fjdgfys3842365"
+app.secret_key = "fdfhs34h23jbmbfg23b4jhfg"
 
 login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager.init_app(app, add_context_processor=True)
 
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-# try:
-#     init_db_command()
-# except sqlite3.OperationalError:
-#     pass
+UserController = UserController()
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
@@ -43,19 +42,16 @@ def unauthorized():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
-
+    return UserController.getUserById(user_id)
 
 @app.route("/")
 def index():
     if current_user.is_authenticated:
         return (
-            "<p>Hello, {}! You're logged in! Email: {}</p>"
+            f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
             "<div><p>Google Profile Picture:</p>"
-            '<img src="{}" alt="Google profile pic"></img></div>'
-            '<a class="button" href="/logout">Logout</a>'.format(
-                current_user.name, current_user.email, current_user.profile_pic
-            )
+            f'<img src="{current_user.profile_pic}" alt="Google profile pic"></img></div>'
+            '<a class="button" href="/logout">Logout</a>'
         )
     else:
         return '<a class="button" href="/login">Google Login</a>'
@@ -75,7 +71,7 @@ def login():
 
 
 @app.route("/login/callback")
-def callback():
+def login_callback():
     code = request.args.get("code")
 
     google_provider_cfg = get_google_provider_cfg()
@@ -105,15 +101,15 @@ def callback():
         users_email = userinfo_response.json()["email"]
         picture = userinfo_response.json()["picture"]
         users_name = userinfo_response.json()["given_name"]
+        if not UserController.isEmailAllowedToLogin(users_email):
+            return "Your email not allowed, contact with administrator", 400
     else:
         return "User email not available or not verified by Google.", 400
 
-    user = User(
-        id_=unique_id, name=users_name, email=users_email, profile_pic=picture
-    )
+    user = User(id=unique_id, name=users_name, email=users_email, profile_pic=picture)
     
-    if not User.get(unique_id):
-        User.create(unique_id, users_name, users_email, picture)
+    if not UserController.getUserById(unique_id):
+        UserController.createUser(unique_id, users_name, users_email, picture)
         
     login_user(user)
     return redirect(url_for("index"))
@@ -124,5 +120,13 @@ def logout():
     logout_user()
     return redirect(url_for("index"))
 
+@app.route("/temp_admin", methods = ['POST', 'GET'])
+def temp_admin():
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        AdminController().allowUserEmail(email)
+    return render_template("temp_admin.html")
+
 if __name__ == "__main__":
-    app.run(ssl_context="adhoc")
+    app.run(host='0.0.0.0', port='5000', ssl_context="adhoc", debug=False)
