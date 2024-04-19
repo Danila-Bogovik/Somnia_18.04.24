@@ -1,10 +1,10 @@
-from core.UserModel import UserModel, User
+from core.User.UserModel import UserModel, User
    
 class UserController(UserModel):
     def getUserById(self, user_id:int) -> User:
         
         if UserData:=self._userById(user_id):
-            return User(UserData[0], UserData[1], UserData[2], UserData[3])
+            return User(*UserData)
         else:
             return None
         
@@ -14,6 +14,6 @@ class UserController(UserModel):
         else:
             return False
     
-    def createUser(self, id, name, email, profile_pic):
-        return self._create(id, name, email, profile_pic)
+    def createUser(self, id, name, email, google_profile_pic):
+        return self._create(id, name, email, google_profile_pic)
     

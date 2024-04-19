@@ -1,4 +1,4 @@
-from core.AdminModel import AdminModel
+from core.Admin.AdminModel import AdminModel
    
 class AdminController(AdminModel):
     #TODO

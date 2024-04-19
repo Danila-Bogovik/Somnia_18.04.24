@@ -1,7 +1,8 @@
-# Python standard libraries
 import json
+import requests
 
-# Third party libraries
+from oauthlib.oauth2 import WebApplicationClient
+
 from flask import Flask, render_template, redirect, request, url_for
 from flask_login import (
     LoginManager,
@@ -10,11 +11,10 @@ from flask_login import (
     login_user,
     logout_user,
 )
-from oauthlib.oauth2 import WebApplicationClient
-import requests
 
-from core.UserController import UserController, User
-from core.AdminController import AdminController
+from Utils.image import render_picture
+from core.User.UserController import UserController, User
+from core.Admin.AdminController import AdminController
 
 GOOGLE_CLIENT_ID = ""
 GOOGLE_CLIENT_SECRET = ""
@@ -48,9 +48,9 @@ def load_user(user_id):
 def index():
     if current_user.is_authenticated:
         return (
-            f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
+            f"<p>Hello, {current_user.display_name}! You're logged in! Email: {current_user.email}</p>"
             "<div><p>Google Profile Picture:</p>"
-            f'<img src="{current_user.profile_pic}" alt="Google profile pic"></img></div>'
+            f'<img src="{current_user.google_profile_pic}" alt="Google profile pic"></img></div>'
             '<a class="button" href="/logout">Logout</a>'
         )
     else:
@@ -106,10 +106,9 @@ def login_callback():
     else:
         return "User email not available or not verified by Google.", 400
 
-    user = User(id=unique_id, name=users_name, email=users_email, profile_pic=picture)
-    
     if not UserController.getUserById(unique_id):
         UserController.createUser(unique_id, users_name, users_email, picture)
+    user = UserController.getUserById(unique_id)
         
     login_user(user)
     return redirect(url_for("index"))
@@ -122,11 +121,21 @@ def logout():
 
 @app.route("/temp_admin", methods = ['POST', 'GET'])
 def temp_admin():
-    
     if request.method == 'POST':
         email = request.form['email']
         AdminController().allowUserEmail(email)
     return render_template("temp_admin.html")
 
+@app.route("/edit_profile", methods = ['POST', 'GET'])
+def edit_profile():
+    if request.method == 'POST':
+        name = request.form['name']
+        about = request.form['about']
+        avatar = request.form['avatar'].read()
+        avatar_bytes = bytearray(avatar)
+        print(avatar_bytes)
+    return render_template("edit_profile.html")
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5000', ssl_context="adhoc", debug=False)
+    context = ('certificate/cert.pem', 'certificate/private.key')
+    app.run(host='0.0.0.0', port='5000', ssl_context=context, debug=False)

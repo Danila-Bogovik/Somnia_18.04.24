@@ -11,9 +11,12 @@ class Database:
             cursor.execute("""CREATE TABLE IF NOT EXISTS Users 
                            (
                                 id TEXT PRIMARY KEY,
-                                name TEXT NOT NULL,
+                                google_name TEXT NOT NULL,
+                                display_name TEXT NOT NULL,
                                 email TEXT UNIQUE NOT NULL,
-                                profile_pic TEXT NOT NULL
+                                google_profile_pic TEXT NOT NULL,
+                                custom_profile_pic TEXT,
+                                about TEXT                             
                             );""")
             cursor.execute("""CREATE TABLE IF NOT EXISTS AllowedUsers
                            (
