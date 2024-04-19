@@ -1,3 +1,4 @@
+/*
 html,
 body {
     font-family: 'Helvetica Neue', sans-serif;
@@ -45,4 +46,172 @@ body {
 
 .card-text {
     color: #777;
+}
+
+*/
+
+
+/*
+===========================================================
+    public
+===========================================================
+*/
+:root {
+    --main-background-color: #ffffff;
+    --main-foreground-color: #111111;
+    --main-theme-color: #FFDD00;
+    --alternative-background-color: #F7F7F7;
+}
+body {
+    background-color: var(--main-background-color);
+}
+.remove-float {
+    clear:both;
+}
+a {
+    color: var(--main-foreground-color);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--main-theme-color);
+    text-decoration: underline;
+}
+button {
+    transition: all 0.5s ease;
+}
+button:hover {
+    background-color: var(--main-foreground-color);
+    color: var(--main-theme-color);
+}
+/*
+===========================================================
+    logo
+===========================================================
+*/
+.logo-block {
+    background: var(--main-theme-color);
+    background: -moz-linear-gradient(0deg, var(--main-foreground-color) 0%, var(--main-background-color) 3%);
+    background: -webkit-linear-gradient(0deg, var(--main-foreground-color) 0%, var(--main-background-color) 3%);
+    background: linear-gradient(0deg, var(--main-foreground-color) 0%, var(--main-background-color) 3%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffdd00",endColorstr="#111111",GradientType=1); 
+    padding: 1em 2.5em;
+}
+.logo-text {
+    font-family: Helvetica-neue Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    text-decoration: none;
+    color: var(--main-foreground-color);
+    transition: all 0.5s ease;
+}
+.logo-text:hover {
+    color: var(--main-theme-color);
+}
+/*
+===========================================================
+    logo
+===========================================================
+*/
+.main-nav-item {
+    align-content: right;
+}
+.main-nav-link {
+    font-family: "Montserrat", Arial,sans-serif;
+    font-weight: 700;
+    color: blue;
+}
+
+/*
+===========================================================
+    date-card
+===========================================================
+*/
+.date-card {
+    padding: 1em;
+    background-color: var(--alternative-background-color);
+    border-radius: 1rem;
+    margin: 0.5rem;
+}
+.date-card h6 {
+    font-size: small;
+    font-weight: 600;
+}
+.user-link {
+    font-size: 12px;
+    color: var(--main-foreground-color);
+    font-style: italic;
+    text-decoration: none;
+}
+.user-link:hover {
+    font-size: 12px;
+    color: var(--main-theme-color);
+    text-decoration: underline;
+}
+.place-of-dating-field {
+    font-size: 24px;
+    font-style: italic;
+    font-weight: 700;
+}
+.date-subscription {
+    padding: 1em 1em;
+    border-left: 1px solid var(--main-foreground-color);
+}
+.date-time-container {
+    margin-top: 0.5em;
+    padding: 0;
+}
+.date-time-container p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+}
+.date-card-action-button {
+    text-align: right;
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+    float: right;
+    background-color: var(--main-theme-color);
+    color: var(--main-foreground-color);
+    border-radius: 1em;
+    font-weight: 600;
+    border-width: 0;
+    font-size: 18px;
+    transition: all 0.5s ease;
+}
+.date-card-action-button:hover {
+    background-color: var(--main-foreground-color);
+    color: var(--main-theme-color);
+}
+/* place */
+.date-place-header {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    padding: 0.2rem;
+    vertical-align: bottom;
+}
+.date-place-header span {
+    vertical-align: bottom;
+}
+
+.date-finding-button-container {
+    float: right;
+}
+.date-finding-button-container button {
+    font-weight: 600;
+    padding: 0.2em 1em;
+    margin: 0.3em;
+    border-width: 0;
+    background-color: var(--main-theme-color);
+    color: var(--main-foreground-color);
+    border-radius: 1em;
+    transition: all 0.5s ease;
+}
+.date-finding-button-container button:hover {
+    background-color: var(--main-foreground-color);
+    color: var(--main-theme-color);
+}
+
+.date-footer {
+    text-align: center;
 }

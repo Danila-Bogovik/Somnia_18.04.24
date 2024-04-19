@@ -1,44 +1,19 @@
-import sqlite3
-from core.config import CONFIG
+from flask import current_app
+from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
 
-db_name = CONFIG["SqlLiteDB_path"]
+db = SQLAlchemy()
 
-class Database:
-    def __init__(self):
-        #debug
-        with sqlite3.connect(db_name) as connection:
-            cursor = connection.cursor()
-            cursor.execute("""CREATE TABLE IF NOT EXISTS Users 
-                           (
-                                id TEXT PRIMARY KEY,
-                                google_name TEXT NOT NULL,
-                                display_name TEXT NOT NULL,
-                                email TEXT UNIQUE NOT NULL,
-                                google_profile_pic TEXT NOT NULL,
-                                custom_profile_pic TEXT,
-                                about TEXT                             
-                            );""")
-            cursor.execute("""CREATE TABLE IF NOT EXISTS AllowedUsers
-                           (
-                                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                email TEXT UNIQUE NOT NULL 
-                            );""")
+class User(db.Model):
+    id = db.Column(db.String(255), primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    profile_pic = db.Column(db.String(255), nullable=False)
+    about = db.Column(db.Text)
+    admin = db.Column(db.Boolean, nullable=False, default=0)
+    def __repr__(self):
+        return f"<User {self.id}: {self.name}>"
 
-    def _fetchData(self, request:str) -> list:
-        with sqlite3.connect(db_name) as connection:
-            result = connection.cursor().execute(request).fetchall()
-            return result
-    
-    def _fetchOneData(self, request:str) -> tuple:
-        with sqlite3.connect(db_name) as connection:
-            result = connection.cursor().execute(request).fetchone()
-            return result
-
-    def _executeData(self, request:str, parameters:tuple ) -> bool:
-        try:
-            with sqlite3.connect(db_name) as connection:
-                connection.cursor().execute(request, parameters)
-                connection.commit()
-            return True
-        except:
-            return False
+class AllowedEmails(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    email = db.Column(db.String(255), nullable=False) 
