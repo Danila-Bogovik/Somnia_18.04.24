@@ -26,8 +26,8 @@
                     <li class="main-nav-item nav-item">
                         <a class="main-nav-link nav-link active" aria-current="page" href="/">Главная</a>
                     </li>
-                    {% if is_logged %}
-                        {%if is_admin %}
+                    {% if user.is_authenticated %}
+                        {%if user.admin %}
                             <li class="main-nav-item nav-item">
                                 <a class="main-nav-link nav-link active" aria-current="page" href="/admin">Управление</a>
                             </li>

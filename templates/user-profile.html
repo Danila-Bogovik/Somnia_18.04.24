@@ -2,13 +2,13 @@
 {% block  main%}
 <section class="user-profile container-fluid">
     <section class="user-head">
-        <img src="{{ profile_pic }}" alt="Google profile pic" class="user-icon">
+        <img src="{{ user.profile_pic }}" alt="Google profile pic" class="user-icon">
         <h2 class="user-name">
-            {{ display_name }}
+            {{ user.name }}
         </h2>
     </section>
     <section class="user-subscription">
-        {{ about_user }} 
+        {{ user.about }} 
     </section>
 </section>
 {% endblock %}

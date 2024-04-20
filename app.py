@@ -2,7 +2,7 @@ import json
 import requests
 
 from oauthlib.oauth2 import WebApplicationClient
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, jsonify
 from flask_login import (
     LoginManager,
     current_user,
@@ -49,25 +49,28 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    # if current_user.is_authenticated:
-    #     return (
-    #         '<p><a class="button" href="/temp_admin">Админка</a></p>'
-    #         '<p><a class="button" href="/edit_profile">Редактировать профиль</a></p>'
-    #         '<a class="button" href="/logout">Logout</a>'
-    #         f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
-    #         "<div><p>Google Profile Picture:</p>"
-    #         f'<img src="{current_user.profile_pic}" alt="Google profile pic"></img></div>'
-    #         f'<p>About: {current_user.about}</p>' 
-    #     )
-    # else:
-    #     return '<a class="button" href="/login">Google Login</a>'
-    is_logged = current_user.is_authenticated
-    if is_logged:
-        is_admin = current_user.admin
-    else:
-        is_admin = False
-    return render_template("main.html", is_logged=is_logged, is_admin=is_admin)
+    return render_template("main.html", user=current_user)
 
+@app.route("/edit_profile", methods = ['POST', 'GET'])
+@login_required
+def edit_profile():
+    if request.method == 'POST':
+        name = request.form['name']
+        about = request.form['description']
+        UserController.editUserProfile(current_user.id, name, about)
+        return redirect(url_for("view_profile", user_id="my"))
+    
+    return render_template("edit-user.html", user=current_user)
+
+@app.route("/view_profile/<user_id>", methods = ['POST', 'GET'])
+@login_required
+def view_profile(user_id):
+    if user_id == "my" or None:
+        user_id = current_user.id
+    profile = UserController.getUserById(user_id)
+    if not profile:
+        return "Profile not found!", 404
+    return render_template("user-profile.html", user=current_user)
 
 @app.route("/login")
 def login():
@@ -137,45 +140,6 @@ def temp_admin():
         email = request.form['email']
         Admin().allowUserEmail(email)
     return render_template("temp_admin.html")
-
-@app.route("/edit_profile", methods = ['POST', 'GET'])
-@login_required
-def edit_profile():
-    if request.method == 'POST':
-        name = request.form['name']
-        about = request.form['description']
-        UserController.editUserProfile(current_user.id, name, about)
-        return redirect(url_for("view_profile", user_id="my"))
-    return render_template("edit-user.html")
-
-@app.route("/view_profile/<user_id>", methods = ['POST', 'GET'])
-@login_required
-def view_profile(user_id):
-    if user_id == "my" or None:
-        user_id = current_user.id
-    profile = UserController.getUserById(user_id)
-    if not profile:
-        return "Profile not found!", 404
-    return render_template("user-profile.html", display_name=profile.name, about_user=(profile.about if profile.about else ""), profile_pic=profile.profile_pic)
-
-@app.route("/create_meeting", methods = ['POST', 'GET'])
-def create_meeting():
-    if request.method == 'POST':
-        UserClass = current_user
-        title = request.form['title-field']
-        description = request.form['description-field']
-        date = request.form['date-field']
-        time = request.form['time-field']
-        duration = request.form['duration-field']
-        SystemController.addUserMeet(UserClass, title, description, date, time, duration)
-        return redirect(url_for("index"))
-    return render_template("create-date-request.html")
-        
-
-@app.route("/get_random_meet")
-@login_required
-def get_random_meet():
-    pass
 
 if __name__ == "__main__":
     with app.app_context():
