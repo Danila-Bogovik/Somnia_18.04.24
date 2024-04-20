@@ -49,19 +49,24 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    if current_user.is_authenticated:
-        return (
-            '<p><a class="button" href="/temp_admin">Админка</a></p>'
-            '<p><a class="button" href="/edit_profile">Редактировать профиль</a></p>'
-            '<a class="button" href="/logout">Logout</a>'
-            f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
-            "<div><p>Google Profile Picture:</p>"
-            f'<img src="{current_user.profile_pic}" alt="Google profile pic"></img></div>'
-            f'<p>About: {current_user.about}</p>'
-            
-        )
+    # if current_user.is_authenticated:
+    #     return (
+    #         '<p><a class="button" href="/temp_admin">Админка</a></p>'
+    #         '<p><a class="button" href="/edit_profile">Редактировать профиль</a></p>'
+    #         '<a class="button" href="/logout">Logout</a>'
+    #         f"<p>Hello, {current_user.name}! You're logged in! Email: {current_user.email}</p>"
+    #         "<div><p>Google Profile Picture:</p>"
+    #         f'<img src="{current_user.profile_pic}" alt="Google profile pic"></img></div>'
+    #         f'<p>About: {current_user.about}</p>' 
+    #     )
+    # else:
+    #     return '<a class="button" href="/login">Google Login</a>'
+    is_logged = current_user.is_authenticated
+    if is_logged:
+        is_admin = current_user.admin
     else:
-        return '<a class="button" href="/login">Google Login</a>'
+        is_admin = False
+    return render_template("main.html", is_logged=is_logged, is_admin=is_admin)
 
 
 @app.route("/login")
@@ -145,8 +150,31 @@ def edit_profile():
 @app.route("/view_profile/<user_id>", methods = ['POST', 'GET'])
 @login_required
 def view_profile(user_id):
+    if user_id == "my":
+        user_id = current_user.id
     profile = UserController.getUserById(user_id)
-    return render_template("view_profile.html", display_name=profile.name, about_user=profile.about, profile_pic=profile.profile_pic)
+    if not profile:
+        return "Profile not found!", 404
+    return render_template("user-profile.html", display_name=profile.name, about_user=profile.about, profile_pic=profile.profile_pic)
+
+@app.route("/create_meeting", methods = ['POST', 'GET'])
+def create_meeting():
+    if request.method == 'POST':
+        UserClass = current_user
+        title = request.form['title-field']
+        description = request.form['description-field']
+        date = request.form['date-field']
+        time = request.form['time-field']
+        duration = request.form['duration-field']
+        SystemController.addUserMeet(UserClass, title, description, date, time, duration)
+        return redirect(url_for("index"))
+    return render_template("create-date-request.html")
+        
+
+@app.route("/random_date")
+@login_required
+def random_date():
+    pass
 
 if __name__ == "__main__":
     with app.app_context():

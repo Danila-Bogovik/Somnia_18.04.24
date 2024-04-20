@@ -1,15 +1,5 @@
-<!--<section class="user-profile container-fluid">
-    <section class="user-head">
-        <img src="../static/img/poebalnic.jpg" alt="Google profile pic" class="user-icon">
-        <h2 class="user-name">Me</h2>
-    </section>
-    <section class="user-subscription">
-        Hi, my name is me, and me is me. <br>
-        I hate python and c++, but i love c#, lua, f# and delphi.
-        Neutral for js, ts and c. 
-    </section>
-</section>-->
-
+{% extends "base.html" %}
+{% block  main%}
 <section class="user-profile container-fluid">
     <section class="user-head">
         <img src="{{ profile_pic }}" alt="Google profile pic" class="user-icon">
@@ -21,3 +11,4 @@
         {{ about_user }} 
     </section>
 </section>
+{% endblock  %}

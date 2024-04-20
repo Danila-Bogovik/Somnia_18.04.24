@@ -1,9 +1,12 @@
+{% extends "base.html" %}
+{% block  main %}
 <div class="container">
     <div class="row">
         <div class="date-place col-12">
             <section class="date-place-header">
                 <div class="date-finding-button-container">
                     <button>Случайная встреча</button>
+                    <a href="/create_meeting"><button>Создать встречу</button></a>
                     <button>Каталог встреч</button>
                 </div>
                 <h2>Встречи:</h2>
@@ -19,4 +22,5 @@
         </div>
     </div>
 </div>
-<script src="../static/js/date-card-get.js"></script>
+<script src="{{ url_for('static', filename='js/date-card-get.js') }}"></script>
+{% endblock %}

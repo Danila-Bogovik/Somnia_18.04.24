@@ -1,8 +1,6 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 
-from core.config import CONFIG
-
 app = Flask(__name__)
 Bootstrap(app)
  
