@@ -74,7 +74,6 @@ button:hover {
 ===========================================================
     date-card
 ===========================================================
-*/
 .date-card {
     padding: 1em;
     background-color: var(--alternative-background-color);
@@ -131,7 +130,47 @@ button:hover {
 .date-card-action-button:hover {
     background-color: var(--main-foreground-color);
     color: var(--main-theme-color);
+}*/
+/*
+===========================================================
+    meet-the-user
+===========================================================
+*/
+.participate-button {
+    margin: 2rem auto;
+    width: 250px;
 }
+.participate-button button {
+    border-width: 0;
+    border-radius: 2em;
+    padding: 1em;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--main-theme-color);
+    color: var(--main-foreground-color);
+}
+.participate-button button:hover {
+    background-color: var(--main-foreground-color);
+    color: var(--main-theme-color);
+}
+.user-card {
+    margin: 1rem;
+    background-color: var(--alternative-background-color);
+    padding: 1em;
+    border-radius: 1rem;
+}
+
+.skip-user-button {
+    float: right;
+}
+.skip-user-button button {
+    border-radius: 1.5em;
+    padding: 0.5em 1em;
+    border-width: 0;
+    background-color: var(--main-theme-color);
+    color: var(--main-foreground-color);
+}
+
 /* place */
 .date-place-header {
     border-top-left-radius: 1rem;
@@ -175,9 +214,6 @@ button:hover {
     margin: 2rem 1rem;
     border-left: 1px solid black;
 }
-.user-head {
-    background-color: var(--main-background-color);
-}
 .user-head img {
     display: inline-block;
     border-radius: 50%;
@@ -191,7 +227,10 @@ button:hover {
 .user-subscription {
     padding: 1em 3em;
 }
-
+.edit-profile-button {
+    float: right;
+    margin: 1em
+}
 /*
 ===========================================================
     date-create-form
@@ -226,4 +265,42 @@ button:hover {
 .edit-user-form-label {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
+}
+
+/*
+===========================================================
+    loading with cancel
+===========================================================
+*/
+
+.loading-with-cancel {
+    margin: 0 auto;
+    text-align: center;
+}
+.cancel-button {
+    border-width: 0;
+    background-color: var(--main-theme-color);
+    color: var(--main-foreground-color);
+    padding: 0.5em 1em;
+    font-weight: 600;
+    border-radius: 1em;
+    margin: 3em auto;
+}
+
+/*
+===========================================================
+    admin
+===========================================================
+*/
+.admin-form-button {
+    width: auto;
+    padding: 0.5rem 2rem;
+    margin-top: 1rem;
+}
+.admin-panel {
+    padding: 2rem 5rem;
+}
+.delete-user-form,
+.add-user-form {
+    margin-top: 3em;
 }

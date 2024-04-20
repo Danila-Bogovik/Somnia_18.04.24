@@ -1,0 +1,69 @@
+<section class="admin-panel container-fluid">
+    <div>
+        <div class="row">
+            <button class="col-6 admin-form-button form-button" id="show-add-user-button">Добавить пользователя</button>
+            <button class="col-6 admin-form-button form-button" id="show-delete-user-button">Удалить пользователя</button>
+        </div>
+
+        <form class="delete-user-form row g-3 needs-validation" method="delete"
+              style="display: none;"
+              id="delete-user-form">
+            <hr>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="email" required>    
+            </div>
+            <div>
+                <button type="submit" class="admin-form-button form-button">
+                    Удалить пользователя
+                </button>
+            </div>
+        </form>
+
+        <form class="add-user-form row g-3 needs-validation"
+              style="display: none;"
+              id="add-user-form" method="post">
+              <hr>
+            <div class="col-md-10">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <!--<div class="col-md-4">
+                <label for="username" class="form-label">ФИО пользователя:</label>
+                <input type="text" class="form-control" name="username" required>
+            </div>
+            <div class="col-md-4">
+                <label for="telegram" class="form-label">Телеграмм:</label>
+                <input type="text" class="form-control" name="telegram">
+            </div>
+            <div class="col-md-8">
+                <label for="subscription" class="form-label">Описание:</label><br>
+                <textarea name="subscription" id="" cols="60" rows="10"></textarea>
+            </div>-->
+            <div>
+                <button type="submit" class="admin-form-button form-button">
+                    Добавить пользователя
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let deleteUserForm = $('#delete-user-form'),
+                addUserFrom    = $('#add-user-form')
+
+            deleteUserForm.hide()
+            addUserFrom.hide()
+
+            $('#show-add-user-button').on('click', function() {
+                deleteUserForm.hide()
+                addUserFrom.show()
+            })
+            $('#show-delete-user-button').on('click', function() {
+                deleteUserForm.show()
+                addUserFrom.hide()
+            })
+        });
+    </script>
+</section>

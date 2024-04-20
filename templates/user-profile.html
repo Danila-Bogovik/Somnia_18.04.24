@@ -2,10 +2,18 @@
 {% block  main%}
 <section class="user-profile container-fluid">
     <section class="user-head">
+<<<<<<< Updated upstream
         <img src="{{ user.profile_pic }}" alt="Google profile pic" class="user-icon">
+=======
+        <img src="{{ profile_pic }}" alt="Google profile pic" class="user-icon">
+        <a href="/edit-profile/" class="">
+            <button class="edit-profile-button form-button">Редактировать</button>
+        </a>
+>>>>>>> Stashed changes
         <h2 class="user-name">
             {{ user.name }}
         </h2>
+        <div class="remove-float"></div>
     </section>
     <section class="user-subscription">
         {{ user.about }} 
