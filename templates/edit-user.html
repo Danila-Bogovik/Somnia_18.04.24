@@ -1,13 +1,18 @@
-<form class="row g-3 needs-validation edit-user-form" action="/edit-profile">
-    <div class="col-md-4">
-        <label for="name" class="edit-user-form-label form-label">Пользователя:</label>
-        <input type="text" class="form-control" name="name" value="{{ display_name }}" required>
-    </div>
+{% extends "base.html" %}
+{% block  main%}
+<div class="input-group mb-3 d-flex justify-content-center">
+    <form class="row g-3 needs-validation edit-user-form" action="/edit_profile" method="post">
+        <div class="input-group-prepend">
+            <label for="name" class="edit-user-form-label form-label">Имя пользователя:</label>
+            <input type="text" class="form-control" name="name" value="{{ display_name }}" required>
+        </div>
 
-    <div class="col-md-10">
-        <label for="about" class="edit-user-form-label form-label">Описание:</label>
-        <textarea name="about" class="form-control" cols="30" rows="10"> {{ description }} </textarea>
-    </div>
+        <div class="input-group-prepend">
+            <label for="description" class="edit-user-form-label form-label">Описание:</label>
+            <textarea name="description" class="form-control" cols="40" rows="10">{{ description }}</textarea>
+        </div>
 
-    <button type="submit" class="form-button col-md-3">Изменить</button>
-</form>
+        <button type="submit" class="form-button mx-auto">Изменить</button>
+    </form>
+</div>
+{% endblock %}

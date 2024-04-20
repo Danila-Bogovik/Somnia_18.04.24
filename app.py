@@ -143,19 +143,20 @@ def temp_admin():
 def edit_profile():
     if request.method == 'POST':
         name = request.form['name']
-        about = request.form['about']
+        about = request.form['description']
         UserController.editUserProfile(current_user.id, name, about)
-    return render_template("edit_profile.html")
+        return redirect(url_for("view_profile", user_id="my"))
+    return render_template("edit-user.html")
 
 @app.route("/view_profile/<user_id>", methods = ['POST', 'GET'])
 @login_required
 def view_profile(user_id):
-    if user_id == "my":
+    if user_id == "my" or None:
         user_id = current_user.id
     profile = UserController.getUserById(user_id)
     if not profile:
         return "Profile not found!", 404
-    return render_template("user-profile.html", display_name=profile.name, about_user=profile.about, profile_pic=profile.profile_pic)
+    return render_template("user-profile.html", display_name=profile.name, about_user=(profile.about if profile.about else ""), profile_pic=profile.profile_pic)
 
 @app.route("/create_meeting", methods = ['POST', 'GET'])
 def create_meeting():
@@ -171,9 +172,9 @@ def create_meeting():
     return render_template("create-date-request.html")
         
 
-@app.route("/random_date")
+@app.route("/get_random_meet")
 @login_required
-def random_date():
+def get_random_meet():
     pass
 
 if __name__ == "__main__":
