@@ -37,11 +37,13 @@
 */
 
 function createDateCardFromJson(jsonData, isAdding) {
+    if(jsonData == null)
+        return $(`<article class="date-card"><h5 class="date-title">Нет встреч.</h5></article>`)
+
     let card = $('<article class="date-card"></article>');
     let user = $(`<a href=${jsonData.user.link} class="user-link">${jsonData.user.name}</a>`)
-    let place = $(`<h5 class="place-of-dating-field">${jsonData.place}</h5>`)
+    let title = $(`<h5 class="date-title">${jsonData.title}</h5>`)
     let subscription = $(`<p class="date-subscription">${jsonData.subscription}</p>`)
-    let amountOfPeople = $(`<h6>${jsonData.amountOfPeople} человек.</h6>`)
     let button = $( `<a class="date-card-action-button btn btn-primary btn-sm " href="#" role="button"> 
             ${isAdding ? 'Согласиться' : 'Удалить'}
         </a>`)
@@ -52,9 +54,8 @@ function createDateCardFromJson(jsonData, isAdding) {
     let removeFloat = $(`<div class="remove-float"></div>`)
 
     user.appendTo(card);
-    place.appendTo(card);
+    title.appendTo(card);
     subscription.appendTo(card);
-    amountOfPeople.appendTo(card);
     button.appendTo(card);
     dateContainer.appendTo(card);
     removeFloat.appendTo(card);
@@ -69,19 +70,19 @@ async function getJson(request) {
 }
 
 $(document).ready(function () {
-    let testObj = {
-        user: {
-            name: 'korova natasha',
-            link: 'https://google.com/'
-        },
-        place: 'ул. серафимовича.',
-        subscription: 'Послушать ахуительные истории про мифичиский с++',
-        amountOfPeople: 15,
-        date: '19.04.24',
-        time: '12:00',
-        duration: '1:35'
-    },
-    viewTest = createDateCardFromJson(testObj, isAdding)
+    viewTest = createDateCardFromJson(null, true)
 
     $('#card-place').append(viewTest);
+
+    $('find-random-meet').on('click', async function() {
+        // /get_random_meet
+
+        let response = await fetch('/get_random_meet'),
+            json = JSON.parse(response.json())
+            
+        viewCard = createDateCardFromJson(json, true)
+
+        $('#card-place').empty();
+        $('#card-place').append(viewCard)
+    })
 });
