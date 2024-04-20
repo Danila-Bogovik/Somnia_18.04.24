@@ -36,14 +36,14 @@
 }
 */
 
-function createDateCardFromJson(jsonData) {
+function createDateCardFromJson(jsonData, isAdding) {
     let card = $('<article class="date-card"></article>');
     let user = $(`<a href=${jsonData.user.link} class="user-link">${jsonData.user.name}</a>`)
     let place = $(`<h5 class="place-of-dating-field">${jsonData.place}</h5>`)
     let subscription = $(`<p class="date-subscription">${jsonData.subscription}</p>`)
     let amountOfPeople = $(`<h6>${jsonData.amountOfPeople} человек.</h6>`)
     let button = $( `<a class="date-card-action-button btn btn-primary btn-sm " href="#" role="button"> 
-            Согласиться
+            ${isAdding ? 'Согласиться' : 'Удалить'}
         </a>`)
     let dateContainer = $(`<div class="date-time-container">
                             <p>Дата:  ${jsonData.date}    Время:  ${jsonData.time}</p>
@@ -81,7 +81,7 @@ $(document).ready(function () {
         time: '12:00',
         duration: '1:35'
     },
-    viewTest = createDateCardFromJson(testObj)
+    viewTest = createDateCardFromJson(testObj, isAdding)
 
     $('#card-place').append(viewTest);
 });

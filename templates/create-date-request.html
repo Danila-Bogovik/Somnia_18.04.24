@@ -1,0 +1,29 @@
+<section class="date-request-form container">
+    <form class="row g-3" action="/create-date/">
+        <!--Заголовок-->
+        <div class="col-md-4">
+            <label for="title-field" class="date-request-form-label form-label">Заголовок встречи</label>
+            <input type="text" class="form-control" name="title-field" required minlength="10">
+        </div>
+
+        <!--описание-->
+        <div class="col-md-12">
+            <label for="subscription-field" class="date-request-form-label form-label" >Описание:</label> 
+            <textarea name="subscription-field" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+
+        <!-- Место встречи-->
+        <div class="col-md-5">
+            <label for="date-field" class="date-request-form-label">Дата и время:</label>
+            <input type="date" name="date-field" required>
+            <input type="time" time="time-field" required>    
+        </div>
+
+        <div class="col-md-4">
+            <label for="duration-field" class="date-request-form-label">Длительность:</label>
+            <input type="time" name="duration-field" required>
+        </div>
+
+        <button class="btn btn-primary col-md-3 form-button" type="submit">Submit form</button>
+    </form>
+</section>
