@@ -197,11 +197,14 @@ button:hover {
     date-create-form
 ===========================================================
 */
-.date-request-form {
+.date-request-form,
+.edit-user-form {
     padding: 1rem;
 }
 .date-request-form input,
-.date-request-form textarea {
+.date-request-form textarea,
+.edit-user-form input,
+.edit-user-form textarea {
     border: 1px solid var(--alternative-foreground-color);
     color: var(--alternative-foreground-color);
     border-radius: 1.5rem;
@@ -219,7 +222,8 @@ button:hover {
     color: var(--main-theme-color);
 }
 .form-button,
-.date-request-form-label {
+.date-request-form-label,
+.edit-user-form-label {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 600;
 }
