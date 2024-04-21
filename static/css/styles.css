@@ -6,9 +6,10 @@
 :root {
     --main-background-color: #ffffff;
     --main-foreground-color: #111111;
-    --main-theme-color: #FFDD00;
+    --main-theme-color: #FEDC00;
     --alternative-background-color: #F7F7F7;
     --alternative-foreground-color: #828282;
+    --logo-color: #262626;
 }
 body {
     background-color: var(--main-background-color);
@@ -284,6 +285,7 @@ button:hover {
     padding: 0.5em 1em;
     font-weight: 600;
     border-radius: 1em;
+<<<<<<< Updated upstream
     margin: 3em auto;
 }
 
@@ -303,4 +305,45 @@ button:hover {
 .delete-user-form,
 .add-user-form {
     margin-top: 3em;
+=======
+    margin: 3em auto
+}
+/*
+===========================================================
+    loading with cancel
+===========================================================
+*/
+.logo-block {
+    text-align: center;
+    font-family: 'Montserrat',Arial,sans-serif;;
+}
+.logo {
+    font-size: larger;
+    font-weight: 900;
+    color: var(--logo-color);
+    font-size: 6rem;
+    line-height: 0.8;
+}
+.sub-logo {
+    padding-top: 1rem;
+    font-size: 24px;
+}
+/*
+===========================================================
+    main-subscription
+===========================================================
+*/
+.main-subscription {
+    background-color: var(--main-theme-color);
+    padding: 6rem 5rem 0.1rem 5rem;
+    margin: 12rem 0;
+}
+.main-subscription p {
+    font-weight: 400;
+}
+.main-subscription h3, h4 {
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+>>>>>>> Stashed changes
 }
