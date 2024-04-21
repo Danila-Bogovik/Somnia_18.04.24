@@ -1,9 +1,15 @@
 <html>
     <body>
+        <a href="/">Вернуться</a>
         <form action = "/temp_admin" method = "post">
             <p>Enter Email to allow:</p>
             <p><input type="text" name="email" /></p>
-            <button type="submit" value="submit">Add</button>
-        </form>   
+            <button type="submit" value="submit" name="allow_email">Add</button>
+        </form>
+        <form action = "/temp_admin" method = "post">
+            <p>Enter Email to set admin (only after user register):</p>
+            <p><input type="text" name="email" /></p>
+            <button type="submit" value="submit" name="make_admin">Make Admin</button>
+        </form> 
     </body>
 </html>

@@ -4,12 +4,17 @@
     <form class="row g-3 needs-validation edit-user-form" action="/edit_profile" method="post">
         <div class="input-group-prepend">
             <label for="name" class="edit-user-form-label form-label">Имя пользователя:</label>
-            <input type="text" class="form-control" name="name" value="{{ display_name }}" required>
+            <input type="text" class="form-control" name="name" value="{{ user.name }}" required>
         </div>
 
         <div class="input-group-prepend">
             <label for="description" class="edit-user-form-label form-label">Описание:</label>
-            <textarea name="description" class="form-control" cols="40" rows="10">{{ description }}</textarea>
+            <textarea name="description" class="form-control" cols="40" rows="10">{{ user.about }}</textarea>
+        </div>
+
+        <div class="input-group-prepend">
+            <label for="description" class="edit-user-form-label form-label">Телеграмм:</label>
+            <textarea name="telegram" class="form-control" cols="40" rows="10">{{ user.telegram }}</textarea>
         </div>
 
         <button type="submit" class="form-button mx-auto">Изменить</button>

@@ -88,7 +88,8 @@ def edit_profile():
     if request.method == 'POST':
         name = request.form['name']
         about = request.form['description']
-        UserController.editUserProfile(current_user.id, name, about)
+        telegram = request.form['description']
+        UserController.editUserProfile(current_user.id, name, about, telegram)
         return redirect(url_for("view_profile", user_id="my"))
     
     return render_template("edit-user.html", user=current_user)
@@ -96,7 +97,7 @@ def edit_profile():
 @app.route("/view_profile/<user_id>", methods = ['POST', 'GET'])
 @login_required
 def view_profile(user_id):
-    if user_id == "my" or None:
+    if user_id == "my":
         user_id = current_user.id
     profile = UserController.getUserById(user_id)
     if not profile:
@@ -105,7 +106,7 @@ def view_profile(user_id):
 
 @app.route("/admin", methods = ['POST', 'GET'])
 @login_required
-def temp_admin():
+def admin():
     if current_user.admin:
         if request.method == 'POST' and "add_user" in request.form:
             email = request.form['email_to_add']
@@ -179,6 +180,19 @@ def login_callback():
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+#only for debug
+@app.route("/temp_admin", methods = ['POST', 'GET'])
+def temp_admin():
+    if request.method == 'POST':
+        if "allow_email" in request.form:
+            email = request.form['email']
+            Admin().allowUserEmail(email)
+        elif "make_admin" in request.form:
+            email = request.form['email']
+            Admin().setAdminToUser(email)
+            
+    return render_template("temp_admin.html")
 
 if __name__ == "__main__":
     with app.app_context():

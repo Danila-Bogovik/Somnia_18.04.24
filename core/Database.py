@@ -10,6 +10,7 @@ class User(db.Model):
     about = db.Column(db.Text)
     admin = db.Column(db.Boolean, nullable=False, default=0)
     partner_id = db.Column(db.String(255))
+    telegram = db.Column(db.String(255))
     searching_partner = db.Column(db.Boolean, nullable=False, default=0)
 
 class AllowedEmails(db.Model):

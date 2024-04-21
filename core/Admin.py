@@ -7,7 +7,14 @@ class Admin():
         email = AllowedEmails(email=users_email)
         db.session.add(email)
         db.session.commit()
-    
+        
+    def setAdminToUser(self, users_email):
+        user = User.query.filter_by(email=users_email).one_or_none()
+        if user:
+            user.admin = True
+            db.session.add(user)
+            db.session.commit()
+            
     def deliteUserEmail(self, email):
         user = User.query.filter_by(email=email).one_or_none()
         email = AllowedEmails.query.filter_by(email=email).one_or_none()
