@@ -3,10 +3,14 @@
 <section class="user-profile container-fluid">
     <section class="user-head">
         <img src="{{ user.profile_pic }}" alt="Google profile pic" class="user-icon">
+        <a href="/edit_profile" class="">
+            <button class="edit-profile-button form-button">Редактировать</button>
+        </a>
         <h2 class="user-name">
             {{ user.name }}
         </h2>
     </section>
+    <div class="remove-float"></div>
     <section class="user-subscription">
         {{ user.about }} 
     </section>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block head %}
+{% if user %}
+{% if user.is_authenticated %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('update', function() {
+            location.reload()
+        });
+    </script>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% block  main %}
+<div class="container">
+    <div class="row">
+        {% if user %}
+        {% if user.is_authenticated %}
+            {% if partner %}
+                <article class="user-card">
+                    <a class="user-card-link user-head" href="/view_profile/{{ partner.id }}">
+                        <img src="{{partner.profile_pic}}" alt="">
+                        <h3 class="user-name">
+                            {{ partner.name }}
+                        </h3>
+                    </a>
+                    <p class="user-subscription">
+                        {{ partner.about }}
+                    </p>
+                    <div>
+                        <form action="/take-part" method="post">
+                            <button name="skip" type="submit" class="btn skip-user-button cancel-button">Пропустить</button>
+                        </form>
+                        <a href="#">Telegram</a>
+                        <div class="remove-float"></div>
+                    </div>
+                </article>
+            {% elif user.searching_partner %}
+            <form action="/take-part" method="post">
+                <div class="loading-with-cancel">
+                    <div class="loading-text">
+                        <img src="{{ url_for('static', filename='img/loading.gif') }}" height="40rem" class=""><p>Поиск...</p>
+                    </div>
+                    <button name="cencel" type="submit" class="participate-button btn cancel-button">Отменить</button>
+                </div>    
+            </form>          
+            {% else %}
+                <form action="/take-part" method="post">
+                    <br>
+                    <button name="join" type="submit" class="participate-button d-flex justify-content-center btn cancel-button">Принять участие </button>
+                </form>
+            {% endif%}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

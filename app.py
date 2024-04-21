@@ -23,7 +23,7 @@ GOOGLE_DISCOVERY_URL = (
 )
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = "fdfhs34h23jbmbfg23b4jhfg"
 
 login_manager = LoginManager()
@@ -54,6 +54,11 @@ def on_connect():
     
 @app.route("/", methods = ['POST', 'GET'])
 def index():
+    return render_template("main.html", user=current_user)
+
+@app.route("/take-part", methods = ['POST', 'GET'])
+@login_required
+def take_part():
     partner = None
     
     if current_user and current_user.is_authenticated:
@@ -63,20 +68,20 @@ def index():
         partner = SystemController.findPartnerForUser(current_user.id)
         if partner:
             socketio.emit('update', to=partner.id)
-        return render_template('main.html', user=current_user, partner=partner)
+        return render_template('take-part.html', user=current_user, partner=partner)
     
     elif request.method == 'POST' and 'cencel' in request.form:
         SystemController.cencelSearhingForUser(current_user.id)
-        return render_template('main.html', user=current_user, partner=partner)
+        return render_template('take-part.html', user=current_user, partner=partner)
     
     elif request.method == 'POST' and 'skip' in request.form:
         partner_id = current_user.partner_id
         SystemController.skipPartnerForUser(current_user.id)
         socketio.emit('update', to=partner_id)
-        return render_template('main.html', user=current_user, partner=None)
+        return render_template('take-part.html', user=current_user, partner=None)
     
-    return render_template("main.html", user=current_user, partner=partner)
-
+    return render_template('take-part.html', user=current_user, partner=partner)
+    
 @app.route("/edit_profile", methods = ['POST', 'GET'])
 @login_required
 def edit_profile():
@@ -102,10 +107,15 @@ def view_profile(user_id):
 @login_required
 def temp_admin():
     if current_user.admin:
-        if request.method == 'POST':
-            email = request.form['email']
+        if request.method == 'POST' and "add_user" in request.form:
+            email = request.form['email_to_add']
             Admin().allowUserEmail(email)
-        return render_template("admin-profile.html", user=current_user)
+            
+        if request.method == 'POST' and "delete_user" in request.form:
+            email = request.form['email_to_delete']
+            Admin().deliteUserEmail(email)
+            
+        return render_template("admin-profile.html", user=current_user, users=Admin().getAllowedUsersEmail())
     else: return unauthorized()
 
 @app.route("/login")

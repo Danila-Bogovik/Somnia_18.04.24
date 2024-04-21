@@ -36,8 +36,10 @@ class System():
     def skipPartnerForUser(self, user_id):
         user = self.getUserById(user_id)
         partner = self.getUserById(user.partner_id)
-        user.partner_id = None
-        partner.partner_id = None
-        db.session.add(user)
-        db.session.add(partner)
-        db.session.commit()
+        
+        if user.partner_id and partner.partner_id:
+            user.partner_id = None
+            partner.partner_id = None
+            db.session.add(user)
+            db.session.add(partner)
+            db.session.commit()

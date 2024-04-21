@@ -177,3 +177,38 @@ body {
     border-radius: 1em;
     margin: 3em auto
 }
+
+/*
+===========================================================
+    main-subscription
+===========================================================
+*/
+.logo-block {
+    text-align: center;
+    font-family: 'Montserrat',Arial,sans-serif;;
+}
+.logo {
+    font-size: larger;
+    font-weight: 900;
+    color: var(--logo-color);
+    font-size: 6rem;
+    line-height: 0.8;
+}
+.sub-logo {
+    padding-top: 1rem;
+    font-size: 24px;
+}
+
+.main-subscription {
+    background-color: var(--main-theme-color);
+    padding: 6rem 5rem 0.1rem 5rem;
+    margin: 12rem 0;
+}
+.main-subscription p {
+    font-weight: 400;
+}
+.main-subscription h3, h4 {
+    font-weight: 800;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
