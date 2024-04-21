@@ -14,7 +14,7 @@
 
         <div class="input-group-prepend">
             <label for="description" class="edit-user-form-label form-label">Телеграмм:</label>
-            <textarea name="telegram" class="form-control" cols="40" rows="10">{{ user.telegram }}</textarea>
+            <input type="text" class="form-control" name="telegram" value="{{ user.telegram }}" required>
         </div>
 
         <button type="submit" class="form-button mx-auto">Изменить</button>
