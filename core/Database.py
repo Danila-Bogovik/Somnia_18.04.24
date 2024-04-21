@@ -11,9 +11,10 @@ class User(db.Model):
     profile_pic = db.Column(db.String(255), nullable=False)
     about = db.Column(db.Text)
     admin = db.Column(db.Boolean, nullable=False, default=0)
+    partner_id = db.Column(db.String(255))
+    searching_partner = db.Column(db.Boolean, nullable=False, default=0)
 
 class AllowedEmails(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     email = db.Column(db.String(255), nullable=False) 
-    
     

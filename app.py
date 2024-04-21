@@ -2,7 +2,7 @@ import json
 import requests
 
 from oauthlib.oauth2 import WebApplicationClient
-from flask import Flask, render_template, redirect, request, url_for, jsonify
+from flask import Flask, render_template, redirect, url_for, request
 from flask_login import (
     LoginManager,
     current_user,
@@ -10,7 +10,7 @@ from flask_login import (
     login_user,
     logout_user,
 )
-
+from flask_socketio import SocketIO, join_room, leave_room
 from core.Database import db
 from core.User import User
 from core.Admin import Admin
@@ -24,17 +24,17 @@ GOOGLE_DISCOVERY_URL = (
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite'
-app.secret_key = "fdfhs34h23jbmbfg23b4jhfg"
-
-db.init_app(app)
+app.config['SECRET_KEY'] = "fdfhs34h23jbmbfg23b4jhfg"
 
 login_manager = LoginManager()
 login_manager.init_app(app, add_context_processor=True)
 
+db.init_app(app)
+socketio = SocketIO(app)
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-SystemController = System()
 UserController = User()
+SystemController = System()
 
 def get_google_provider_cfg():
     return requests.get(GOOGLE_DISCOVERY_URL).json()
@@ -47,9 +47,35 @@ def unauthorized():
 def load_user(user_id):
     return UserController.getUserById(user_id)
 
-@app.route("/")
+@socketio.on('connect')
+def on_connect():
+    print(f"connected {current_user.id}")
+    join_room(current_user.id)
+    
+@app.route("/", methods = ['POST', 'GET'])
 def index():
-    return render_template("main.html", user=current_user)
+    partner = None
+    
+    if current_user and current_user.is_authenticated:
+        partner = UserController.getUserById(current_user.partner_id)
+    
+    if request.method == 'POST' and 'join' in request.form:
+        partner = SystemController.findPartnerForUser(current_user.id)
+        if partner:
+            socketio.emit('update', to=partner.id)
+        return render_template('main.html', user=current_user, partner=partner)
+    
+    elif request.method == 'POST' and 'cencel' in request.form:
+        SystemController.cencelSearhingForUser(current_user.id)
+        return render_template('main.html', user=current_user, partner=partner)
+    
+    elif request.method == 'POST' and 'skip' in request.form:
+        partner_id = current_user.partner_id
+        SystemController.skipPartnerForUser(current_user.id)
+        socketio.emit('update', to=partner_id)
+        return render_template('main.html', user=current_user, partner=None)
+    
+    return render_template("main.html", user=current_user, partner=partner)
 
 @app.route("/edit_profile", methods = ['POST', 'GET'])
 @login_required
@@ -71,6 +97,16 @@ def view_profile(user_id):
     if not profile:
         return "Profile not found!", 404
     return render_template("user-profile.html", user=current_user)
+
+@app.route("/admin", methods = ['POST', 'GET'])
+@login_required
+def temp_admin():
+    if current_user.admin:
+        if request.method == 'POST':
+            email = request.form['email']
+            Admin().allowUserEmail(email)
+        return render_template("admin-profile.html", user=current_user)
+    else: return unauthorized()
 
 @app.route("/login")
 def login():
@@ -133,13 +169,6 @@ def login_callback():
 def logout():
     logout_user()
     return redirect(url_for("index"))
-
-@app.route("/temp_admin", methods = ['POST', 'GET'])
-def temp_admin():
-    if request.method == 'POST':
-        email = request.form['email']
-        Admin().allowUserEmail(email)
-    return render_template("temp_admin.html")
 
 if __name__ == "__main__":
     with app.app_context():
