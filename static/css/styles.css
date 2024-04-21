@@ -46,8 +46,8 @@ body {
 }
 .user-card {
     margin: 1rem;
-    background-color: var(--alternative-background-color);
     padding: 1em;
+    background-color: var(--alternative-background-color);
     border-radius: 1rem;
 }
 
@@ -211,4 +211,49 @@ body {
     font-weight: 800;
     margin-top: 2rem;
     margin-bottom: 4rem;
+}
+
+/*
+===========================================================
+    chat-box
+===========================================================
+*/
+.chat-box {
+    border: 1px solid var(--main-foreground-color);
+    border-radius: 2em;
+}
+.user-box {
+    border-bottom: 1px solid var(--main-foreground-color);
+    margin: 1rem;
+    padding: 1em;
+    
+}
+.self-user-message,
+.other-user-message {
+    padding: 1rem;
+    font-weight: 500;
+}
+.self-user-message {
+    text-align: right;
+    background-color: var(--main-theme-color);
+}
+.chat-input-box {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid var(--main-foreground-color);
+}
+.chat-input-button {
+    flex: 1;
+    border-bottom-right-radius: 2em;
+    border: none;
+    background-color: var(--main-theme-color);
+    font-weight: 600;
+}
+
+.chat-input-box textarea {
+    flex: 2;
+    height: 4em;
+    border: none;
+    border-bottom-left-radius: 2em;
+    padding: 0.4em 2em;
 }
