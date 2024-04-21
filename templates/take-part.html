@@ -37,10 +37,33 @@
                         <form action="/take-part" method="post">
                             <button name="skip" type="submit" class="btn skip-user-button cancel-button">Пропустить</button>
                         </form>
-                        <a href="#">Telegram</a>
+                        <a >Telegram: {{ partner.telegram }}</a>
                         <div class="remove-float"></div>
                     </div>
                 </article>
+                <div class="container">
+                    <section class="chat-box">
+                        <a href=""></a>
+                            <div class="user-box">
+                                <span>Chat</span>
+                            </div>
+                        </a>
+                        
+                        <div class="chat-place">
+                            <article class="self-user-message">
+                                Привет
+                            </article>
+                            <article class="other-user-message">
+                                Дарова
+                            </article>
+                        </div>
+                
+                        <div class="chat-input-box">
+                            <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <button class="chat-input-button">Отправить</button>  
+                        </div>
+                    </section>
+                </div>
             {% elif user.searching_partner %}
             <form action="/take-part" method="post">
                 <div class="loading-with-cancel">
