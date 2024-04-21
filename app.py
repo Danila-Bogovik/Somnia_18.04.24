@@ -27,7 +27,6 @@ app.config['SECRET_KEY'] = "fdfhs34h23jbmbfg23b4jhfg"
 login_manager = LoginManager()
 login_manager.init_app(app, add_context_processor=True)
 
-db.init_app(app)
 socketio = SocketIO(app)
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
@@ -195,7 +194,9 @@ def temp_admin():
     return render_template("temp_admin.html")
 
 if __name__ == "__main__":
+    
     with app.app_context():
+        db.init_app(app)
         db.create_all()
     context = ('certificate/cert.pem', 'certificate/private.key')
     app.run(host='0.0.0.0', port='5000', ssl_context=context, debug=False)
