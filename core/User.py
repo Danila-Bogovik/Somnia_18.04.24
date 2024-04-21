@@ -17,5 +17,6 @@ class User(User, UserMixin):
         user = User(id=unique_id, name=users_name, email=users_email, profile_pic=picture)
         db.session.add(user)
         db.session.commit()
+        return True
         
     

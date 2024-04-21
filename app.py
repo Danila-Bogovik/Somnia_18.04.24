@@ -18,9 +18,7 @@ from core.System import System
 
 GOOGLE_CLIENT_ID = ""
 GOOGLE_CLIENT_SECRET = ""
-GOOGLE_DISCOVERY_URL = (
-    "https://accounts.google.com/.well-known/openid-configuration"
-)
+GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -102,7 +100,7 @@ def view_profile(user_id):
     profile = UserController.getUserById(user_id)
     if not profile:
         return "Profile not found!", 404
-    return render_template("user-profile.html", user=current_user)
+    return render_template("user-profile.html", user=profile)
 
 @app.route("/admin", methods = ['POST', 'GET'])
 @login_required
@@ -167,12 +165,14 @@ def login_callback():
             return "Your email not allowed, contact with administrator", 400
     else:
         return "User email not available or not verified by Google.", 400
-
+    
+    created = False
     if not UserController.getUserById(user_id=unique_id):
-        UserController.createUser(unique_id, users_name, users_email, picture)
+        created = UserController.createUser(unique_id, users_name, users_email, picture)
     user = UserController.getUserById(unique_id)
-        
     login_user(user)
+    if created:
+        return redirect(url_for("edit_profile"))
     return redirect(url_for("index"))
 
 @app.route("/logout")
